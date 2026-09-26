@@ -435,7 +435,9 @@ function stats(ys) {
 
   function refreshAll(resetFrame) {
     yM = yMax();
-    drawFrame(resetFrame ? 0 : state.f);
+    // switching scenario/settings shows the full 20-year path immediately
+    // (press play to watch it animate from year 0)
+    drawFrame(resetFrame ? YEARS : state.f);
     renderTable();
     renderBond();
     renderLegend();
