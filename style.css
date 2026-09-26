@@ -21,6 +21,7 @@
   --c-dotfill: #1a2748;
   --c-tipbg: rgba(10,16,32,.96);
   --c-ink: #e8eefc;
+  --gold-ink: #132033;
   --bigbg: linear-gradient(135deg, #1b2a52, var(--card));
   --bigborder: #3350a0;
 }
@@ -47,6 +48,7 @@
   --c-dotfill: #ffffff;
   --c-tipbg: rgba(255,255,255,.97);
   --c-ink: #1d2947;
+  --gold-ink: #ffffff;
   --bigbg: linear-gradient(135deg, #e3ecff, #ffffff);
   --bigborder: #a9c1f7;
 }
@@ -74,6 +76,7 @@
     --c-dotfill: #ffffff;
     --c-tipbg: rgba(255,255,255,.97);
     --c-ink: #1d2947;
+    --gold-ink: #ffffff;
     --bigbg: linear-gradient(135deg, #e3ecff, #ffffff);
     --bigborder: #a9c1f7;
   }
@@ -111,7 +114,7 @@ section { margin-top: 72px; scroll-margin-top: 20px; }
 h2 { font-size: 27px; margin: 0 0 6px; }
 h2 .no { color: var(--gold); font-size: 15px; vertical-align: middle; margin-right: 10px; letter-spacing: 1px; }
 .lead { color: var(--muted); margin: 0 0 22px; font-size: 16.5px; }
-b, strong { color: #fff; }
+b, strong { color: var(--text); }
 .gold { color: var(--gold); } .green { color: var(--green); } .red { color: var(--red); } .blue { color: var(--blue); } .orange { color: var(--orange); }
 .small { font-size: 13.5px; color: var(--muted); }
 code.pill { background:#1c2947; border:1px solid var(--line); border-radius:6px; padding:1px 8px; font-size:14px; color:var(--gold); }
@@ -128,13 +131,13 @@ code.pill { background:#1c2947; border:1px solid var(--line); border-radius:6px;
 .fact .v { font-size: 30px; font-weight: 700; color: var(--gold); font-variant-numeric: tabular-nums; }
 .fact .v.blue { color: var(--blue); } .fact .v.green { color: var(--green); }
 .fact .k { font-size: 14px; color: var(--muted); margin-top: 2px; }
-.fact .d { font-size: 12.5px; color: #7d8db8; margin-top: 6px; line-height: 1.5; }
+.fact .d { font-size: 12.5px; color: var(--muted); opacity: .85; margin-top: 6px; line-height: 1.5; }
 
 /* ---------- S2 steps ---------- */
 .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; }
 .step { position: relative; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px; }
 .step .n {
-  position: absolute; top: -14px; left: 18px; background: var(--gold); color: #132033;
+  position: absolute; top: -14px; left: 18px; background: var(--gold); color: var(--gold-ink);
   font-weight: 700; border-radius: 999px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 15px;
 }
 .step h3 { margin: 6px 0 8px; font-size: 17.5px; }
@@ -155,8 +158,8 @@ code.pill { background:#1c2947; border:1px solid var(--line); border-radius:6px;
   padding: 9px 16px; font-size: 15px; cursor: pointer; transition: all .15s; font-family: inherit;
 }
 .btn:hover { border-color: var(--blue); }
-.btn.active { background: var(--gold); border-color: var(--gold); color: #132033; font-weight: 700; }
-.btn.play { background: var(--gold); border-color: var(--gold); color: #132033; font-weight: 700; font-size: 16px; padding: 10px 22px; }
+.btn.active { background: var(--gold); border-color: var(--gold); color: var(--gold-ink); font-weight: 700; }
+.btn.play { background: var(--gold); border-color: var(--gold); color: var(--gold-ink); font-weight: 700; font-size: 16px; padding: 10px 22px; }
 input[type=range] { accent-color: var(--gold); width: 100%; }
 input[type=number], select {
   background: var(--card2); color: var(--text); border: 1px solid var(--line); border-radius: 8px;
@@ -231,7 +234,7 @@ table.cmp th { background: var(--card2); color: var(--muted); font-weight: 600; 
 table.cmp td:first-child, table.cmp th:first-child { text-align: left; }
 table.cmp tr.cur td { background: rgba(245,197,66,.07); }
 table.cmp .dot { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 8px; }
-.fineprint { font-size: 12.5px; color: #7d8db8; margin-top: 10px; line-height: 1.7; }
+.fineprint { font-size: 12.5px; color: var(--muted); opacity: .85; margin-top: 10px; line-height: 1.7; }
 
 /* ---------- S6 history ---------- */
 .histwrap { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px; }

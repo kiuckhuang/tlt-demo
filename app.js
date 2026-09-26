@@ -37,7 +37,10 @@ function refreshPalette() {
     dotring: cs.getPropertyValue('--c-dotring').trim() || '#0b1220',
     dotfill: cs.getPropertyValue('--c-dotfill').trim() || '#1a2748',
     tipbg: cs.getPropertyValue('--c-tipbg').trim(),
-    ink: cs.getPropertyValue('--c-ink').trim() || '#e8eefc'
+    ink: cs.getPropertyValue('--c-ink').trim() || '#e8eefc',
+    gold: cs.getPropertyValue('--gold').trim() || '#f5c542',
+    pos: cs.getPropertyValue('--green').trim() || '#4ade80',
+    neg: cs.getPropertyValue('--red').trim() || '#f87171'
   };
 }
 refreshPalette();
@@ -168,12 +171,12 @@ function stats(ys) {
     $('#sw-arrow-l').textContent = dy > 0.001 ? '↑' : (dy < -0.001 ? '↓' : '•');
     $('#sw-arrow-r').textContent = dy > 0.001 ? '↓' : (dy < -0.001 ? '↑' : '•');
     $('#ro-delta').textContent = signPct(dy, 2) + ' pp';
-    $('#ro-delta').style.color = dy > 0.001 ? '#f87171' : (dy < -0.001 ? '#4ade80' : '#e8eefc');
+    $('#ro-delta').style.color = dy > 0.001 ? PALETTE.neg : (dy < -0.001 ? PALETTE.pos : PALETTE.ink);
     $('#ro-tlt').textContent = 'US$' + tlt.toFixed(2) + '（' + signPct(tltPct, 1) + '）';
-    $('#ro-tlt').style.color = tltPct > 0.001 ? '#4ade80' : (tltPct < -0.001 ? '#f87171' : '#e8eefc');
+    $('#ro-tlt').style.color = tltPct > 0.001 ? PALETTE.pos : (tltPct < -0.001 ? PALETTE.neg : PALETTE.ink);
     var pv = bondPV(y);
     $('#ro-bond').textContent = 'US$' + pv.toFixed(0) + '（' + signPct(pv / 1000 - 1, 1) + ' vs 面值）';
-    $('#ro-bond').style.color = pv >= 1000 ? '#4ade80' : '#f87171';
+    $('#ro-bond').style.color = pv >= 1000 ? PALETTE.pos : PALETTE.neg;
   }
   slider.addEventListener('input', upd); upd();
 })();
@@ -193,7 +196,7 @@ function stats(ys) {
       bar.className = 'barfill ' + (chg >= 0 ? 'pos' : 'neg');
       var pc = $('#pc-' + k);
       pc.textContent = signPct(chg, 1);
-      pc.style.color = chg >= 0 ? '#4ade80' : '#f87171';
+      pc.style.color = chg >= 0 ? PALETTE.pos : PALETTE.neg;
     });
   }
   slider.addEventListener('input', upd); upd();
@@ -251,7 +254,7 @@ function stats(ys) {
     });
     navPath = svgEl('path', { fill: 'none', stroke: PALETTE.ink, 'stroke-width': 4, 'stroke-linecap': 'round' }, gLines);
     scanLine = svgEl('line', { stroke: PALETTE.scan, 'stroke-width': 1, 'stroke-dasharray': '4 4' }, svg);
-    scanDot = svgEl('circle', { r: 5.5, fill: '#f5c542', stroke: PALETTE.dotring, 'stroke-width': 2 }, svg);
+    scanDot = svgEl('circle', { r: 5.5, fill: PALETTE.gold, stroke: PALETTE.dotring, 'stroke-width': 2 }, svg);
   }
   function drawStatic() {
     gGrid.innerHTML = ''; gAxes.innerHTML = '';
@@ -342,17 +345,17 @@ function stats(ys) {
     $('#frameYear').textContent = '第 ' + yr + ' 年';
     $('#cnt-year-t').textContent = '第 ' + yr + ' 年 · 總資產' + (state.reinvest ? '（收息再投資）' : '（利息收現金）');
     $('#cnt-total').textContent = fmtMoney(vNow, state.cur);
-    $('#cnt-total').style.color = vNow >= B ? '#f5c542' : '#f87171';
+    $('#cnt-total').style.color = vNow >= B ? PALETTE.gold : PALETTE.neg;
     var cagr = f > 0.5 ? Math.pow(vNow / B, 1 / f) - 1 : 0;
     var cg = $('#cnt-cagr');
     cg.textContent = f > 0.5 ? signPct(cagr, 2) : '—';
-    cg.style.color = cagr >= 0 ? '#4ade80' : '#f87171';
+    cg.style.color = cagr >= 0 ? PALETTE.pos : PALETTE.neg;
     var incPart = state.reinvest ? (r.nav - r.price) * B : r.cash * B;
     var prPart = (r.price - 1) * B;
     $('#cnt-income').textContent = '+\u00A0' + fmtMoney(Math.max(0, incPart), state.cur);
     var cp = $('#cnt-price');
     cp.textContent = (prPart >= 0 ? '+\u00A0' : '−\u00A0') + fmtMoney(Math.abs(prPart), state.cur);
-    cp.style.color = prPart >= 0 ? '#4ade80' : '#f87171';
+    cp.style.color = prPart >= 0 ? PALETTE.pos : PALETTE.neg;
     $('#cnt-div').textContent = (f > 0 ? '+\u00A0' : '') + fmtMoney(Math.max(0, r.inc) * B / 1, state.cur) + '\u00A0/年';
     if (state.inflation) {
       $('#cnt-real-box').style.display = '';
@@ -405,7 +408,7 @@ function stats(ys) {
       var s = stats(getYs(k));
       var v20 = s.nav20 * B;
       var diff = (fin / v20 - 1) * 100;
-      lines.push('<div style="display:flex;justify-content:space-between;gap:10px;"><span>' + SCENARIOS[k].name + '</span><span style="color:' + (diff >= 0 ? '#4ade80' : '#f87171') + '">' + (diff >= 0 ? '贏 +' : '輸 −') + Math.abs(diff).toFixed(1) + '%</span></div>');
+      lines.push('<div style="display:flex;justify-content:space-between;gap:10px;"><span>' + SCENARIOS[k].name + '</span><span style="color:' + (diff >= 0 ? PALETTE.pos : PALETTE.neg) + '">' + (diff >= 0 ? '贏 +' : '輸 −') + Math.abs(diff).toFixed(1) + '%</span></div>');
     });
     $('#ro-b-vs').innerHTML = lines.join('');
   }
@@ -497,7 +500,7 @@ function stats(ys) {
       '<div class="yr">第 ' + t + ' 年' + (t > 0 ? ' · 債息 ' + fmtPct(r.y, 2) : '') + '</div>' +
       '<div class="row"><span>總資產</span><b>' + fmtMoney(r[key] * B, state.cur) + '</b></div>' +
       '<div class="row"><span>累積收息</span><span class="green">+' + fmtMoney(Math.max(0, incPart), state.cur) + '</span></div>' +
-      '<div class="row"><span>價格損益</span><span style="color:' + (prPart >= 0 ? '#4ade80' : '#f87171') + '">' + (prPart >= 0 ? '+' : '−') + fmtMoney(Math.abs(prPart), state.cur) + '</span></div>' +
+      '<div class="row"><span>價格損益</span><span style="color:' + (prPart >= 0 ? PALETTE.pos : PALETTE.neg) + '">' + (prPart >= 0 ? '+' : '−') + fmtMoney(Math.abs(prPart), state.cur) + '</span></div>' +
       (t > 0 ? '<div class="row"><span>該年派息</span><span class="gold">+' + fmtMoney(r.inc * B, state.cur) + '</span></div>' : '') +
       (state.inflation && t > 0 ? '<div class="row"><span>通脹後實值</span><span class="orange">' + fmtMoney(r[key] / Math.pow(1 + INF, t) * B, state.cur) + '</span></div>' : '');
     tip.style.display = 'block';
@@ -598,7 +601,7 @@ function stats(ys) {
     for (var i = 1; i < data.length; i++) d += ' L ' + xS(data[i][0]) + ' ' + yS(data[i][1]);
     // area under curve (drawn first, under the line)
     svgEl('path', { d: d + ' L ' + xS(2026.7) + ' ' + yS(ymin) + ' L ' + xS(2002) + ' ' + yS(ymin) + ' Z', fill: 'rgba(245,197,66,0.10)', stroke: 'none' }, svg);
-    var path = svgEl('path', { d: d, fill: 'none', stroke: '#f5c542', 'stroke-width': 2.6 }, svg);
+    var path = svgEl('path', { d: d, fill: 'none', stroke: PALETTE.gold, 'stroke-width': 2.6 }, svg);
     pathRef = path;
     if (drawn) {
       path.style.strokeDasharray = 'none';
