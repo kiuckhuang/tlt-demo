@@ -349,11 +349,11 @@ function stats(ys) {
     cg.style.color = cagr >= 0 ? '#4ade80' : '#f87171';
     var incPart = state.reinvest ? (r.nav - r.price) * B : r.cash * B;
     var prPart = (r.price - 1) * B;
-    $('#cnt-income').textContent = '+ ' + fmtMoney(Math.max(0, incPart), state.cur);
+    $('#cnt-income').textContent = '+\u00A0' + fmtMoney(Math.max(0, incPart), state.cur);
     var cp = $('#cnt-price');
-    cp.textContent = (prPart >= 0 ? '+ ' : '− ') + fmtMoney(Math.abs(prPart), state.cur);
+    cp.textContent = (prPart >= 0 ? '+\u00A0' : '−\u00A0') + fmtMoney(Math.abs(prPart), state.cur);
     cp.style.color = prPart >= 0 ? '#4ade80' : '#f87171';
-    $('#cnt-div').textContent = (f > 0 ? '+ ' : '') + fmtMoney(Math.max(0, r.inc) * B / 1, state.cur) + ' /年';
+    $('#cnt-div').textContent = (f > 0 ? '+\u00A0' : '') + fmtMoney(Math.max(0, r.inc) * B / 1, state.cur) + '\u00A0/年';
     if (state.inflation) {
       $('#cnt-real-box').style.display = '';
       $('#cnt-real').textContent = fmtMoney(vNow / Math.pow(1 + INF, f), state.cur);
