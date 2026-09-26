@@ -201,7 +201,7 @@ function stats(ys) {
 
 /* ================= S5 simulator ================= */
 (function () {
-  var state = { scen: 'cut', cur: 'HKD', B: 100000, reinvest: true, inflation: false, vol: true, f: 0, playing: false };
+  var state = { scen: 'cut', cur: 'HKD', B: 100000, reinvest: true, inflation: false, vol: true, showShock: false, f: 0, playing: false };
   var custom = { target: 0.03, years: 8 };
   var rowsCache = {};
   function getRows(key) {
@@ -291,9 +291,9 @@ function stats(ys) {
     navPath.setAttribute('stroke', col);
     var key = state.reinvest ? 'nav' : 'navNr';
     navPath.setAttribute('d', pathFor(rows, f, key, B));
-    // others faint
+    // others dotted (extreme 2022 scenario hidden unless enabled or selected)
     Object.keys(SCENARIOS).forEach(function (k) {
-      if (k === state.scen) { otherPaths[k].setAttribute('d', ''); return; }
+      if (k === state.scen || (k === 'shock' && !state.showShock)) { otherPaths[k].setAttribute('d', ''); return; }
       otherPaths[k].setAttribute('d', pathFor(getRows(k), YEARS, 'nav', B));
     });
     // band
@@ -367,7 +367,7 @@ function stats(ys) {
     state.playing = true;
     btnPlay.textContent = '⏸ 暫停';
     var from = state.f >= YEARS - 0.01 ? 0 : state.f;
-    var t0 = null, durMs = 5200;
+    var t0 = null, durMs = 4000;
     function step(ts) {
       if (!state.playing) return;
       if (!t0) t0 = ts;
@@ -452,7 +452,8 @@ function stats(ys) {
         ? '自訂：由 5.5% 開始，用 ' + custom.years + ' 年去到 ' + fmtPct(custom.target, 1) + '，之後橫行。'
         : SCENARIOS[state.scen].desc;
       refreshAll(true);
-      if (!state.playing) { btnPlay.textContent = '▶ 播放 20 年'; }
+      if (state.playing) pause();
+      play(); // auto-draw the selected scenario
     });
   });
   $('#cTarget').addEventListener('input', function () {
@@ -460,11 +461,13 @@ function stats(ys) {
     $('#cTargetVal').textContent = fmtPct(custom.target, 1);
     rowsCache.custom = null; refreshAll(true);
   });
+  $('#cTarget').addEventListener('change', function () { play(); });
   $('#cYears').addEventListener('input', function () {
     custom.years = parseInt(this.value, 10);
     $('#cYearsVal').textContent = custom.years;
     rowsCache.custom = null; refreshAll(true);
   });
+  $('#cYears').addEventListener('change', function () { play(); });
   $('#principal').addEventListener('change', function () {
     var v = parseFloat(this.value);
     if (isNaN(v)) v = 100000;
@@ -476,6 +479,7 @@ function stats(ys) {
   $('#optReinvest').addEventListener('change', function () { state.reinvest = this.checked; drawFrame(state.f); renderTable(); });
   $('#optInflation').addEventListener('change', function () { state.inflation = this.checked; drawFrame(state.f); });
   $('#optVol').addEventListener('change', function () { state.vol = this.checked; drawFrame(state.f); });
+  $('#optShock').addEventListener('change', function () { state.showShock = this.checked; drawFrame(state.f); });
 
   /* ----- tooltip ----- */
   var chartwrap = $('.chartwrap');
@@ -526,6 +530,19 @@ function stats(ys) {
 
   build();
   refreshAll(true);
+  // auto-draw once when the simulator first scrolls into view
+  var autoPlayed = false;
+  var autoObs = new IntersectionObserver(function (ents) {
+    ents.forEach(function (en) {
+      if (en.isIntersecting && !autoPlayed) {
+        autoPlayed = true;
+        autoObs.disconnect();
+        drawFrame(0);
+        play();
+      }
+    });
+  }, { threshold: 0.35 });
+  autoObs.observe($('.chartwrap'));
   document.addEventListener('themechange', function () { refreshAll(false); });
   // diag (offscreen, for render verification)
   try {
