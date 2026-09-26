@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TLT 互動解說 · 100K 投資 20 年模擬器</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <span class="kicker">ETF 互動解說 · 香港繁體版</span>
+  <h1><span class="hl">TLT</span> 係乜東東？<br>投入 100K 之後 20 年會點？</h1>
+  <p class="sub">iShares 20+ Year Treasury Bond ETF（美國 20 年期以上國債 ETF）——一隻「月月派息、但價格好大上落」嘅長債 ETF。</p>
+  <span class="data-chip">📊 數據日：<b>2026-09-25 收市</b> ｜ 現價 <b>US$79.32</b> ｜ 派息率(過去12月) <b>4.73%</b> ｜ 市場 20 年債息 <b>5.54%</b> ｜ 年費 <b>0.15%</b> ｜ 規模 <b>US$47.05B</b> ｜ 來源：Yahoo Finance・Trading Economics</span>
+</header>
+
+<!-- ============ S1 係乜 ============ -->
+<section id="sec-what">
+  <h2><span class="no">01</span>TLT 簡單嚟講係……</h2>
+  <p class="lead">你買一股 TLT，等於<b>同時買入成籃子美國政府 20 年期以上嘅長期國債</b>。iShares（貝萊德）幫你買賣同換馬，你淨係負責收息同睇住個價。</p>
+  <div class="facts">
+    <div class="fact"><div class="v" data-count="47.05" data-dec="2" data-prefix="US$" data-suffix="B">0</div><div class="k">資產規模</div><div class="d">全球最大嘅長債 ETF 之一，超過 470 億美元</div></div>
+    <div class="fact"><div class="v" data-count="5.5" data-dec="1" data-suffix="%">0</div><div class="k">前瞻息率（貼近市場債息）</div><div class="d">基金不斷換入 5.5% 息嘅新債，前瞻收息貼近 20 年市場債息 <b>5.54%</b>，<b>每月派息</b>（Yahoo 嗰個 4.73% 係過去 12 個月派息率，屬滯後數）</div></div>
+    <div class="fact"><div class="v blue" data-count="0.15" data-dec="2" data-suffix="%">0</div><div class="k">年費（Expense Ratio）</div><div class="d">每 10 萬蚊一年收你 $150 管理費，算平</div></div>
+    <div class="fact"><div class="v blue" data-count="16.5" data-dec="1" data-suffix=" 年">0</div><div class="k">平均存續期（Duration）</div><div class="d">利率每升 1%，價格大約跌 16.5%——係佢波動嘅根源（約數）</div></div>
+    <div class="fact"><div class="v green" data-count="40" data-dec="0" data-prefix="約 " data-suffix=" 隻">0</div><div class="k">持有債券數目</div><div class="d">全部係美國財政部發行嘅國債，違約風險極低</div></div>
+    <div class="fact"><div class="v green" data-count="2.39" data-dec="2" data-suffix="">0</div><div class="k">Beta（對標普500）</div><div class="d">波動大過股市兩倍幾——佢唔係「收息定海神針」，係一隻有脾氣嘅資產</div></div>
+  </div>
+</section>
+
+<!-- ============ S2 點運作 ============ -->
+<section id="sec-how">
+  <h2><span class="no">02</span>佢點樣運作？三步搞掂</h2>
+  <p class="lead">成個機制其實係一個「<b>收租 + 換馬</b>」嘅循環：</p>
+  <div class="steps">
+    <div class="card step"><span class="n">1</span>
+      <h3>🧺 買入一籃子長債</h3>
+      <p>基金用你嘅錢買入數十隻<span class="gold">剩返年期 20 年以上</span>嘅美國國債。國債 = 美國政府打嘅借據，定期派利息。</p>
+    </div>
+    <div class="card step"><span class="n">2</span>
+      <h3>💸 月月派息</h3>
+      <p>收埋啲利息，扣咗 0.15% 年費，<span class="gold">每個月</span>派一次現金畀你。前瞻年化大約 <b>5.5%</b>，追貼市場債息。</p>
+    </div>
+    <div class="card step"><span class="n">3</span>
+      <h3>🔄 永遠換馬（重點！）</h3>
+      <p>啲債跌破 20 年年期，基金就<span class="red">賣走佢、買新嘅 20 年+ 長債</span>。所以 TLT <b>永遠唔會「到期還本」</b>——佢係一隻永續嘅債券基金，價格永遠跟住市場利率郁。</p>
+    </div>
+  </div>
+
+  <div class="bondviz">
+    <svg viewBox="0 0 880 210" id="bondsvg">
+      <!-- bond -->
+      <g transform="translate(70,60)">
+        <rect x="0" y="0" width="150" height="90" rx="12" fill="#1a2748" stroke="#60a5fa" stroke-width="1.5"/>
+        <text x="75" y="30" text-anchor="middle" fill="#e8eefc" font-size="15" font-weight="700">美國 30 年國債</text>
+        <text x="75" y="54" text-anchor="middle" fill="#9fb0d8" font-size="13">票息 5.5%/年</text>
+        <text x="75" y="74" text-anchor="middle" fill="#f5c542" font-size="13">US$1,000 一張</text>
+      </g>
+      <path class="flow" d="M 225 105 H 330" stroke="#f5c542" stroke-width="2.5" fill="none" marker-end="url(#arrG)"/>
+      <!-- fund basket -->
+      <g transform="translate(345,45)">
+        <path d="M 10 25 L 150 25 L 130 115 L 30 115 Z" fill="#141f38" stroke="#f5c542" stroke-width="2"/>
+        <text x="80" y="60" text-anchor="middle" fill="#f5c542" font-size="14" font-weight="700">TLT</text>
+        <text x="80" y="80" text-anchor="middle" fill="#9fb0d8" font-size="11.5">你嘅 1 股 = 一小份</text>
+      </g>
+      <path class="flow" d="M 510 105 H 605" stroke="#4ade80" stroke-width="2.5" fill="none" marker-end="url(#arrGr)"/>
+      <!-- investor -->
+      <g transform="translate(620,55)">
+        <circle cx="40" cy="20" r="18" fill="#1a2748" stroke="#4ade80" stroke-width="1.5"/>
+        <text x="40" y="26" text-anchor="middle" font-size="18">🧑‍💼</text>
+        <text x="40" y="60" text-anchor="middle" fill="#e8eefc" font-size="13.5" font-weight="700">你</text>
+        <text x="40" y="80" text-anchor="middle" fill="#9fb0d8" font-size="12">買一股 TLT</text>
+      </g>
+      <!-- dividend loop -->
+      <path class="flow" d="M 640 130 C 560 190 420 190 350 130" stroke="#fb923c" stroke-width="2.5" fill="none" marker-end="url(#arrO)"/>
+      <g class="coin"><text x="495" y="180" text-anchor="middle" font-size="14">💰</text></g>
+      <text x="495" y="200" text-anchor="middle" fill="#fb923c" font-size="13" font-weight="700">每月派息 4.73%</text>
+      <!-- defs arrows -->
+      <defs>
+        <marker id="arrG" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#f5c542"/></marker>
+        <marker id="arrGr" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#4ade80"/></marker>
+        <marker id="arrO" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#fb923c"/></marker>
+      </defs>
+    </svg>
+    <div class="cap">你唔使 directly 買債券：基金幫你買、收息、換馬，你坐定定收月息就得</div>
+  </div>
+</section>
+
+<!-- ============ S3 蹺蹺板 ============ -->
+<section id="sec-seesaw">
+  <h2><span class="no">03</span>核心機制：利率同債價係「蹺蹺板」</h2>
+  <p class="lead">記住呢條黃金定律：<b class="red">利率升 ⬆ ⇒ 舊債價格跌 ⬇</b>；<b class="green">利率跌 ⬇ ⇒ 舊債價格升 ⬆</b>。原因好簡單——你手上張舊債票息 5.5%，如果市場新債派 6.5%，邊個仲要你張舊債？除非你<b>平價賣</b>。拖下個掣感受下：</p>
+
+  <div class="seesaw-box">
+    <div class="ctrl-row">
+      <span class="lbl">市場利率（20 年債息）：</span>
+      <span style="flex:1; min-width:220px;"><input type="range" id="rate" min="2" max="8" step="0.05" value="5.5"></span>
+      <span class="lbl" style="min-width:130px;">而家：<b id="rateVal" class="gold">5.50%</b></span>
+    </div>
+    <svg viewBox="0 0 760 300" id="seesawsvg">
+      <line x1="60" y1="268" x2="700" y2="268" stroke="#26335a" stroke-width="2"/>
+      <!-- pivot -->
+      <path d="M 380 268 L 355 218 L 405 218 Z" fill="#f5c542"/>
+      <g id="plank" transform="rotate(0 380 218)">
+        <line x1="120" y1="218" x2="640" y2="218" stroke="#60a5fa" stroke-width="8" stroke-linecap="round"/>
+        <!-- left: rate -->
+        <g transform="translate(120,218)">
+          <rect x="-55" y="-108" width="110" height="70" rx="10" fill="#1a2748" stroke="#fb923c" stroke-width="1.5"/>
+          <text x="0" y="-78" text-anchor="middle" fill="#fb923c" font-size="14" font-weight="700">市場利率</text>
+          <text id="sw-rate" x="0" y="-52" text-anchor="middle" fill="#e8eefc" font-size="19" font-weight="700">4.70%</text>
+          <text id="sw-arrow-l" x="0" y="-122" text-anchor="middle" fill="#9fb0d8" font-size="18">•</text>
+        </g>
+        <!-- right: price -->
+        <g transform="translate(640,218)">
+          <rect x="-62" y="-108" width="124" height="70" rx="10" fill="#1a2748" stroke="#f87171" stroke-width="1.5"/>
+          <text x="0" y="-78" text-anchor="middle" fill="#f87171" font-size="14" font-weight="700">TLT 債價</text>
+          <text id="sw-price" x="0" y="-52" text-anchor="middle" fill="#e8eefc" font-size="19" font-weight="700">79.32</text>
+          <text id="sw-arrow-r" x="0" y="-122" text-anchor="middle" fill="#9fb0d8" font-size="18">•</text>
+        </g>
+      </g>
+      <text x="380" y="292" text-anchor="middle" fill="#7d8db8" font-size="12.5">利率嗰邊沉 ⇄ 債價嗰邊升，兩頭永遠反方向</text>
+    </svg>
+    <div class="readout">
+      <div class="ro"><div class="t">利率由 5.50% 移動後嘅變化</div><div class="v" id="ro-delta">0.0%</div></div>
+      <div class="ro"><div class="t">TLT 估價（≈ −16.5 × 利率變動）</div><div class="v" id="ro-tlt">US$79.32（0%）</div></div>
+      <div class="ro"><div class="t">你張舊債（30年、票息4.5%、面值US$1,000）市價</div><div class="v" id="ro-bond">—</div></div>
+    </div>
+  </div>
+
+  <div class="callout gold" style="margin-top:18px;">
+    💡 <b>簡單例子：</b>你去年用 <b>US$1,000</b> 買咗張 30 年債，票息 <b>4.5%</b>（每年收 $45）。今年市場利率升到 <b>6%</b>，新買家可以收 $60/年。你想放售？唯有減價到大約 <b class="red">US$793（蝕 21%）</b>，令人家買你張舊債嘅實際回報都係 6% 先有人要。—— 呢個就係「利率升、債價跌」嘅全部原理。相反，利率跌到 3%，你張 $45 票息嘅債即刻變搶手貨，可以賣貴過面值。
+  </div>
+</section>
+
+<!-- ============ S4 duration ============ -->
+<section id="sec-dur">
+  <h2><span class="no">04</span>點解 TLT 咁大波動？因為佢「槓桿咁玩利率」</h2>
+  <p class="lead">存續期（Duration）可以理解成「<b>利率敏感度倍數</b>」：利率每變 1%，債價大約變 <b class="gold">Duration × 1%</b>（反方向）。TLT 嘅 Duration 大約 <b>16.5</b>，所以利率郁 1%，佢就郁 <b>16.5%</b>！撣下個掣比較三隻國債 ETF：</p>
+
+  <div class="card">
+    <div class="ctrl-row">
+      <span class="lbl">假設利率變動：</span>
+      <span style="flex:1; min-width:220px;"><input type="range" id="dRate" min="-3" max="3" step="0.25" value="1"></span>
+      <span class="lbl" style="min-width:120px;"><b id="dRateVal" class="gold">+1.00%</b></span>
+    </div>
+    <div class="durrow"><div class="nm">SHY<span class="s">1–3 年期短債 · Duration ≈ 2</span></div><div class="bartrack"><div class="barfill neg" id="bar-shy"></div></div><div class="pc" id="pc-shy">−2.0%</div></div>
+    <div class="durrow"><div class="nm">IEF<span class="s">7–10 年期中期債 · Duration ≈ 7.4</span></div><div class="bartrack"><div class="barfill neg" id="bar-ief"></div></div><div class="pc" id="pc-ief">−7.4%</div></div>
+    <div class="durrow"><div class="nm">TLT<span class="s">20 年+ 長債 · Duration ≈ 16.5</span></div><div class="bartrack"><div class="barfill neg" id="bar-tlt"></div></div><div class="pc" id="pc-tlt">−16.5%</div></div>
+    <p class="small" style="margin:10px 0 0;">即係話：2022 年聯儲局暴力加息嗰陣，TLT 一年<span class="red">跌咗 31%</span>——唔係黑天鵝，係數學。（方便記法：<code class="pill">價格變化 ≈ −Duration × 利率變化</code>）</p>
+  </div>
+
+  <div class="vs">
+    <div class="card">
+      <h3>🏠 你自己買一張 20 年債</h3>
+      <ul>
+        <li>有<b>到期日</b>：捱到到期，政府還你面值，<b>中途帳面蝕都唔使認</b></li>
+        <li>票息鎖死，年年一樣</li>
+        <li>入場費高（一手都要幾萬美元）</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>🧺 買 TLT（永續換馬）</h3>
+      <ul>
+        <li><b>冇到期日</b>：基金永遠持有 20 年+ 嘅債，<b>價格永遠隨利率波動</b>，唔會「捱到到期就返家鄉」</li>
+        <li>息率會跟市場浮動（舊債換新債）</li>
+        <li>入場費低（一股 US$79），月月派息，但<b>心理考驗大</b>：跌 30% 時你捱唔捱得住？</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ S5 模擬器 ============ -->
+<section id="sec-sim">
+  <h2><span class="no">05</span>🎬 主菜：100K 投入 TLT，20 年會點？</h2>
+  <p class="lead">下面個模擬器用簡化模型：<code class="pill">每年回報 ≈ 收息(債息−0.15%費) − 16.5 × 利率升幅</code>。揀一個未來 20 年嘅利率劇本，撳播放，睇住 100K 點演變：</p>
+
+  <div class="card">
+    <div class="ctrl-row">
+      <span class="lbl">利率劇本：</span>
+      <button class="btn scen active" data-scen="cut">📉 減息週期</button>
+      <button class="btn scen" data-scen="flat">➡️ 風平浪靜</button>
+      <button class="btn scen" data-scen="infl">🔥 通脹重燃</button>
+      <button class="btn scen" data-scen="shock">💥 2022 重演</button>
+      <button class="btn scen" data-scen="custom">🛠 自訂</button>
+      <span id="scen-desc" class="lbl" style="flex-basis:100%;">經濟放緩，聯儲局減息：20 年債息 5 年內 5.5% → 3.0%，之後橫行。</span>
+    </div>
+    <div id="custom-panel" style="display:none;">
+      <div class="ctrl-row">
+        <span class="lbl">20 年債息最終去到：</span><span class="lbl gold" id="cTargetVal" style="min-width:56px;">3.0%</span>
+        <span style="flex:1; min-width:180px;"><input type="range" id="cTarget" min="2" max="8" step="0.1" value="3"></span>
+        <span class="lbl">用幾多年到位：</span><span class="lbl gold" id="cYearsVal" style="min-width:40px;">8</span>
+        <span style="flex:1; min-width:140px;"><input type="range" id="cYears" min="2" max="20" step="1" value="8"></span>
+      </div>
+    </div>
+    <div class="ctrl-row">
+      <span class="lbl">本金：</span><input type="number" id="principal" value="100000" min="1000" step="1000" style="width:130px;">
+      <select id="currency"><option value="HKD" selected>HKD 港元</option><option value="USD">USD 美元</option></select>
+      <label class="chk"><input type="checkbox" id="optReinvest" checked> 收息再投資</label>
+      <label class="chk"><input type="checkbox" id="optInflation"> 計通脹（2.5%/年）</label>
+      <label class="chk"><input type="checkbox" id="optVol" checked> 顯示波幅帶</label>
+    </div>
+    <div class="scrub">
+      <button class="btn play" id="btnPlay">▶ 播放 20 年</button>
+      <input type="range" id="scrub" min="0" max="20" step="0.05" value="0">
+      <span class="yrlab" id="frameYear">第 0 年</span>
+    </div>
+  </div>
+
+  <div class="simgrid" style="margin-top:16px;">
+    <div class="chartwrap">
+      <svg id="simsvg" viewBox="0 0 900 460"></svg>
+      <div class="tip" id="simtip"></div>
+    </div>
+    <div class="counters">
+      <div class="cnt big"><div class="t" id="cnt-year-t">第 0 年 · 總資產</div><div class="v" id="cnt-total">—</div></div>
+      <div class="cnt"><div class="t">年化回報（CAGR）</div><div class="v" id="cnt-cagr">—</div></div>
+      <div class="cnt"><div class="t">累積收息（已再投資）</div><div class="v green" id="cnt-income">—</div></div>
+      <div class="cnt"><div class="t">價格損益</div><div class="v" id="cnt-price">—</div></div>
+      <div class="cnt"><div class="t">本年度派息</div><div class="v gold" id="cnt-div">—</div></div>
+      <div class="cnt" id="cnt-real-box" style="display:none;"><div class="t">通脹後實質購買力（2.5%/年）</div><div class="v orange" id="cnt-real">—</div></div>
+    </div>
+  </div>
+
+  <table class="cmp" id="tbl-compare"></table>
+
+  <div class="card" style="margin-top:18px;">
+    <h3 style="margin:0 0 8px;">💡 對照：唔想捱波動？直接鎖一隻美國國債</h3>
+    <p style="margin:0 0 6px; font-size:14.5px; color:var(--muted);">直接買 20 年期美國國債（市場息 <b>5.54%</b>）並<b>持有到期</b>：政府保證到期還面值，中途價格點跌都唔使理——唔賣就唔使認蝕。代價係筆錢鎖死，同埋票息<b>每半年</b>先派一次（TLT 係每月）、到期後要面對再投資風險。</p>
+    <div class="ctrl-row">
+      <span class="lbl">鎖息年期：</span><span class="lbl gold" id="bYearsVal" style="min-width:48px;">20 年</span>
+      <span style="flex:1; min-width:150px;"><input type="range" id="bYears" min="5" max="30" step="1" value="20"></span>
+      <span class="lbl">鎖定年息：</span><span class="lbl gold" id="bRateVal" style="min-width:56px;">5.54%</span>
+      <span style="flex:1; min-width:150px;"><input type="range" id="bRate" min="3" max="7" step="0.01" value="5.54"></span>
+    </div>
+    <div class="readout">
+      <div class="ro"><div class="t">每年收息（呢筆本金）</div><div class="v green" id="ro-b-inc">—</div></div>
+      <div class="ro"><div class="t">到期保證總值（票息再投資）</div><div class="v green" id="ro-b-final">—</div></div>
+      <div class="ro"><div class="t">同 TLT 四個劇本嘅 20 年結果對比</div><div class="v" id="ro-b-vs" style="font-size:14px; line-height:1.9;">—</div></div>
+    </div>
+    <p class="fineprint">YTM 假設：中途收嘅票息再投資時都攞到同一息率。想連再投資風險都殺埋，可以買<b>零息債（STRIPS）</b>：而家一筆過平價買入（20 年期大約 3.4 折面值），2046 年一次過收足，中間零現金流、零再投資風險。直債入場：美股券商債券部或銀行（面值 US$1,000 一手）；零售買賣價差一般比 ETF 闊少少。</p>
+  </div>
+
+  <p class="fineprint">模擬假設：以 2026-09-25 收市價 US$79.32、年費 0.15%、有效存續期 16.5 年（約數）、前瞻組合息率 5.5%（市場 20 年債息 5.54%；Yahoo 顯示嘅 4.73% 係滯後派息率）計算；每年回報 ≈（年初債息 − 0.15%）− 16.5 × 債息升幅；<b>唔包括</b>凸性、孳息曲線形狀變化、追蹤誤差、稅項同匯兌（港幣同美元掛鈎，USD/HKD 風險相對細）。波幅帶只係示意（年化波動約 15%）。呢個係教育用途模擬，<b>唔係預測，更加唔係投資建議</b>。</p>
+</section>
+
+<!-- ============ S6 歷史 ============ -->
+<section id="sec-hist">
+  <h2><span class="no">06</span>歷史已經示範過：佢係「過山車」</h2>
+  <p class="lead">TLT 2002 年上市，經歷過金融海嘯大升、2020 疫情見頂 <b>US$178.7</b>、之後加息週期<span class="red">由高位跌超過一半</span>。撳下面啲年份睇故事：</p>
+  <div class="histwrap">
+    <svg id="histsvg" viewBox="0 0 900 380"></svg>
+    <div class="chips" id="hist-chips"></div>
+    <div id="hist-card">👆 撳一下圖入面嘅圓點，或者上面嘅年份，睇當年發生咗咩事。</div>
+  </div>
+  <div class="callout">
+    😰 <b>殘酷例子：</b>如果你喺 2020 年 8 月歷史高位（US$178.7）買入——到今日 2026 年 9 月（US$79.32），<b>價格蝕咗約 55%</b>，就算計埋四年幾嘅利息，大約都係<b>蝕一半</b>。債券唔係存款，長債 ETF 波動起上嚟仲勁過股票（Beta 2.39）。
+  </div>
+  <div class="callout gold">
+    ⚖️ <b>但另一面：</b>過去 5 年 TLT 跌咗約 46%，原因係息率由低位 1.9% 抽上 4.7%。而家息率喺高位——<b>你收息嘅起點比 2020 年嗰班人高出一倍幾</b>。買債券回報嘅最大決定因素，係你<b>開始買入嗰刻嘅息率</b>。
+  </div>
+</section>
+
+<!-- ============ S7 實務 ============ -->
+<section id="sec-notes">
+  <h2><span class="no">07</span>香港人實務筆記</h2>
+  <div class="notes">
+    <div class="note"><h3>🛒 邊度買？</h3>TLT 喺美股上市（NASDAQ），要經美股券商（如 IBKR、Futu、長橋等）買，港股通買唔到。一股 US$79，HK$100K 大約買到 158 股，月月派息自動過數。</div>
+    <div class="note"><h3>🇺🇸 稅務</h3>TLT 嘅分派主要係美國國債利息，對非美國稅務居民一般<b>獲豁免美國預扣稅</b>（同一般美股 30% 股息稅唔同）。香港本身唔收股息稅。詳細請問稅務顧問。</div>
+    <div class="note"><h3>💱 匯率</h3>資產係美元計價，但港元同美元掛鈎（7.75–7.85），所以<b>匯率風險相對細</b>。真正侵蝕你嘅係<b>通脹</b>——20 年 2.5% 通脹會食掉約 39% 購買力。</div>
+    <div class="note"><h3>🎯 適合邊個？</h3>適合：想要 4.7% 月息、看好減息、想對沖股市大跌（衰退時長債通常升）。唔適合：當存款放、接受唔到中途 −30%、或者 3 年內要攞返嚟使。</div>
+  </div>
+
+  <div class="card" style="margin-top:20px;">
+    <h3 style="margin:0 0 10px;">📌 一句總結</h3>
+    <p style="margin:0 0 8px;">TLT = <b>用 16.5 倍槓桿咁嘅敏感度去賭美國長期利率方向 + 收 4.7% 月息</b>。</p>
+    <p style="margin:0;">減息 → 賺息又賺價；加息 → 息都補唔住價。20 年咁長，<b>你賺嘅主要係「不斷再投資嘅利息」</b>，價格上落長遠會互相抵消——前提係你中途<b>唔好驚到喺低位斬纜</b>。用模擬器試下「2022 重演」劇本：頭兩年捱價，但捱到 20 年個結局可能好過你想像。想完全唔使捱？用第 05 節嘅對照計算機，直接鎖 20 年直債 @5.54%——到期保證本息，係「穩定收息」嘅另一條路。</p>
+  </div>
+
+  <div class="disclaimer">
+    ⚠️ 免責聲明：本網頁係教育用途嘅簡化模擬，全部數據截至 2026-09-25（來源：Yahoo Finance），存續期等參數為約數；模擬結果唔構成任何投資建議、要約或預測。過去表現唔代表將來回報，投資涉及風險，價格可升可跌，亦有機會損失本金。作任何投資決定前，請考慮自身風險承受能力，並諮詢持牌財務顧問。
+  </div>
+</section>
+
+<footer>TLT Interactive Explainer · made for you · data as of 2026-09-25 · 教育用途</footer>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
