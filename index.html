@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark light">
 <title>TLT 互動解說 · 100K 投資 20 年模擬器</title>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -14,6 +15,12 @@
   <h1><span class="hl">TLT</span> 係乜東東？<br>投入 100K 之後 20 年會點？</h1>
   <p class="sub">iShares 20+ Year Treasury Bond ETF（美國 20 年期以上國債 ETF）——一隻「月月派息、但價格好大上落」嘅長債 ETF。</p>
   <span class="data-chip">📊 數據日：<b>2026-09-25 收市</b> ｜ 現價 <b>US$79.32</b> ｜ 派息率(過去12月) <b>4.73%</b> ｜ 市場 20 年債息 <b>5.54%</b> ｜ 年費 <b>0.15%</b> ｜ 規模 <b>US$47.05B</b> ｜ 來源：Yahoo Finance・Trading Economics</span>
+  <br>
+  <span class="theme-row" id="themeSeg" role="group" aria-label="主題切換">
+    <button class="btn tbtn" data-t="system">🖥️ 跟系統</button>
+    <button class="btn tbtn" data-t="light">☀️ 淺色</button>
+    <button class="btn tbtn" data-t="dark">🌙 深色</button>
+  </span>
 </header>
 
 <!-- ============ S1 係乜 ============ -->
@@ -53,25 +60,25 @@
     <svg viewBox="0 0 880 210" id="bondsvg">
       <!-- bond -->
       <g transform="translate(70,60)">
-        <rect x="0" y="0" width="150" height="90" rx="12" fill="#1a2748" stroke="#60a5fa" stroke-width="1.5"/>
-        <text x="75" y="30" text-anchor="middle" fill="#e8eefc" font-size="15" font-weight="700">美國 30 年國債</text>
-        <text x="75" y="54" text-anchor="middle" fill="#9fb0d8" font-size="13">票息 5.5%/年</text>
+        <rect x="0" y="0" width="150" height="90" rx="12" style="fill:var(--card2)" stroke="#60a5fa" stroke-width="1.5"/>
+        <text x="75" y="30" text-anchor="middle" style="fill:var(--text)" font-size="15" font-weight="700">美國 30 年國債</text>
+        <text x="75" y="54" text-anchor="middle" style="fill:var(--muted)" font-size="13">票息 5.5%/年</text>
         <text x="75" y="74" text-anchor="middle" fill="#f5c542" font-size="13">US$1,000 一張</text>
       </g>
       <path class="flow" d="M 225 105 H 330" stroke="#f5c542" stroke-width="2.5" fill="none" marker-end="url(#arrG)"/>
       <!-- fund basket -->
       <g transform="translate(345,45)">
-        <path d="M 10 25 L 150 25 L 130 115 L 30 115 Z" fill="#141f38" stroke="#f5c542" stroke-width="2"/>
+        <path d="M 10 25 L 150 25 L 130 115 L 30 115 Z" style="fill:var(--card)" stroke="#f5c542" stroke-width="2"/>
         <text x="80" y="60" text-anchor="middle" fill="#f5c542" font-size="14" font-weight="700">TLT</text>
-        <text x="80" y="80" text-anchor="middle" fill="#9fb0d8" font-size="11.5">你嘅 1 股 = 一小份</text>
+        <text x="80" y="80" text-anchor="middle" style="fill:var(--muted)" font-size="11.5">你嘅 1 股 = 一小份</text>
       </g>
       <path class="flow" d="M 510 105 H 605" stroke="#4ade80" stroke-width="2.5" fill="none" marker-end="url(#arrGr)"/>
       <!-- investor -->
       <g transform="translate(620,55)">
-        <circle cx="40" cy="20" r="18" fill="#1a2748" stroke="#4ade80" stroke-width="1.5"/>
+        <circle cx="40" cy="20" r="18" style="fill:var(--card2)" stroke="#4ade80" stroke-width="1.5"/>
         <text x="40" y="26" text-anchor="middle" font-size="18">🧑‍💼</text>
-        <text x="40" y="60" text-anchor="middle" fill="#e8eefc" font-size="13.5" font-weight="700">你</text>
-        <text x="40" y="80" text-anchor="middle" fill="#9fb0d8" font-size="12">買一股 TLT</text>
+        <text x="40" y="60" text-anchor="middle" style="fill:var(--text)" font-size="13.5" font-weight="700">你</text>
+        <text x="40" y="80" text-anchor="middle" style="fill:var(--muted)" font-size="12">買一股 TLT</text>
       </g>
       <!-- dividend loop -->
       <path class="flow" d="M 640 130 C 560 190 420 190 350 130" stroke="#fb923c" stroke-width="2.5" fill="none" marker-end="url(#arrO)"/>
@@ -100,27 +107,27 @@
       <span class="lbl" style="min-width:130px;">而家：<b id="rateVal" class="gold">5.50%</b></span>
     </div>
     <svg viewBox="0 0 760 300" id="seesawsvg">
-      <line x1="60" y1="268" x2="700" y2="268" stroke="#26335a" stroke-width="2"/>
+      <line x1="60" y1="268" x2="700" y2="268" style="stroke:var(--c-grid)" stroke-width="2"/>
       <!-- pivot -->
       <path d="M 380 268 L 355 218 L 405 218 Z" fill="#f5c542"/>
       <g id="plank" transform="rotate(0 380 218)">
-        <line x1="120" y1="218" x2="640" y2="218" stroke="#60a5fa" stroke-width="8" stroke-linecap="round"/>
+        <line x1="120" y1="218" x2="640" y2="218" style="stroke:var(--blue)" stroke-width="8" stroke-linecap="round"/>
         <!-- left: rate -->
         <g transform="translate(120,218)">
-          <rect x="-55" y="-108" width="110" height="70" rx="10" fill="#1a2748" stroke="#fb923c" stroke-width="1.5"/>
+          <rect x="-55" y="-108" width="110" height="70" rx="10" style="fill:var(--card2)" stroke="#fb923c" stroke-width="1.5"/>
           <text x="0" y="-78" text-anchor="middle" fill="#fb923c" font-size="14" font-weight="700">市場利率</text>
-          <text id="sw-rate" x="0" y="-52" text-anchor="middle" fill="#e8eefc" font-size="19" font-weight="700">5.50%</text>
-          <text id="sw-arrow-l" x="0" y="-122" text-anchor="middle" fill="#9fb0d8" font-size="18">•</text>
+          <text id="sw-rate" x="0" y="-52" text-anchor="middle" style="fill:var(--text)" font-size="19" font-weight="700">5.50%</text>
+          <text id="sw-arrow-l" x="0" y="-122" text-anchor="middle" style="fill:var(--muted)" font-size="18">•</text>
         </g>
         <!-- right: price -->
         <g transform="translate(640,218)">
-          <rect x="-62" y="-108" width="124" height="70" rx="10" fill="#1a2748" stroke="#f87171" stroke-width="1.5"/>
+          <rect x="-62" y="-108" width="124" height="70" rx="10" style="fill:var(--card2)" stroke="#f87171" stroke-width="1.5"/>
           <text x="0" y="-78" text-anchor="middle" fill="#f87171" font-size="14" font-weight="700">TLT 債價</text>
-          <text id="sw-price" x="0" y="-52" text-anchor="middle" fill="#e8eefc" font-size="19" font-weight="700">79.32</text>
-          <text id="sw-arrow-r" x="0" y="-122" text-anchor="middle" fill="#9fb0d8" font-size="18">•</text>
+          <text id="sw-price" x="0" y="-52" text-anchor="middle" style="fill:var(--text)" font-size="19" font-weight="700">79.32</text>
+          <text id="sw-arrow-r" x="0" y="-122" text-anchor="middle" style="fill:var(--muted)" font-size="18">•</text>
         </g>
       </g>
-      <text x="380" y="292" text-anchor="middle" fill="#7d8db8" font-size="12.5">利率嗰邊沉 ⇄ 債價嗰邊升，兩頭永遠反方向</text>
+      <text x="380" y="292" text-anchor="middle" style="fill:var(--muted)" font-size="12.5">利率嗰邊沉 ⇄ 債價嗰邊升，兩頭永遠反方向</text>
     </svg>
     <div class="readout">
       <div class="ro"><div class="t">利率由 5.50% 移動後嘅變化</div><div class="v" id="ro-delta">0.0%</div></div>
@@ -210,7 +217,8 @@
 
   <div class="simgrid" style="margin-top:16px;">
     <div class="chartwrap">
-      <svg id="simsvg" viewBox="0 0 900 460"></svg>
+      <div class="legend" id="simlegend"></div>
+      <svg id="simsvg" viewBox="0 0 900 540"></svg>
       <div class="tip" id="simtip"></div>
     </div>
     <div class="counters">

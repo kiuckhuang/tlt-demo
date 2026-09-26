@@ -26,6 +26,22 @@ function fmtCompact(v, cur) {
 function fmtPct(v, d) { return (v * 100).toFixed(d === undefined ? 1 : d) + '%'; }
 function signPct(v, d) { return (v >= 0 ? '+' : '−') + fmtPct(Math.abs(v), d); }
 
+/* ---------- theme palette (read from CSS variables, refreshed on theme change) ---------- */
+var PALETTE = {};
+function refreshPalette() {
+  var cs = getComputedStyle(document.documentElement);
+  PALETTE = {
+    grid: cs.getPropertyValue('--c-grid').trim() || '#26335a',
+    axis: cs.getPropertyValue('--c-axis').trim() || '#9fb0d8',
+    scan: cs.getPropertyValue('--c-scan').trim() || 'rgba(255,255,255,.35)',
+    dotring: cs.getPropertyValue('--c-dotring').trim() || '#0b1220',
+    dotfill: cs.getPropertyValue('--c-dotfill').trim() || '#1a2748',
+    tipbg: cs.getPropertyValue('--c-tipbg').trim(),
+    ink: cs.getPropertyValue('--c-ink').trim() || '#e8eefc'
+  };
+}
+refreshPalette();
+
 /* ---------- constants (2026-09-25) ---------- */
 var P0 = 79.32;        // TLT close
 var Y0 = 0.055;        // forward portfolio yield ≈ market 20Y yield 5.54% (2026-09-25); Yahoo's 4.73% is trailing distributions
@@ -59,11 +75,11 @@ function shockPath() {
   return ys;
 }
 var SCENARIOS = {
-  cut:   { name: '減息週期', color: '#4ade80', desc: '經濟放緩，聯儲局減息：20 年債息 5 年內 5.5% → 3.0%，之後橫行。', ys: linPath(Y0, 0.030, 5) },
-  flat:  { name: '風平浪靜', color: '#60a5fa', desc: '債息 20 年都喺 5.5% 附近——純收息劇本。', ys: (function () { var a = []; for (var i = 0; i <= YEARS; i++) a.push(Y0); return a; })() },
-  infl:  { name: '通脹重燃', color: '#fb923c', desc: '通脹回歸，債息 10 年內 5.5% → 6.5%，之後橫行。', ys: linPath(Y0, 0.065, 10) },
-  shock: { name: '2022 重演', color: '#f87171', desc: '兩年內債息急升 2 厘（似 2022 年劇本），之後 13 年慢慢回落至 5.0%。', ys: shockPath() },
-  custom:{ name: '自訂', color: '#c084fc', desc: '', ys: null }
+  cut:   { name: '減息週期', color: '#22c55e', desc: '經濟放緩，聯儲局減息：20 年債息 5 年內 5.5% → 3.0%，之後橫行。', ys: linPath(Y0, 0.030, 5) },
+  flat:  { name: '風平浪靜', color: '#3b82f6', desc: '債息 20 年都喺 5.5% 附近——純收息劇本。', ys: (function () { var a = []; for (var i = 0; i <= YEARS; i++) a.push(Y0); return a; })() },
+  infl:  { name: '通脹重燃', color: '#f97316', desc: '通脹回歸，債息 10 年內 5.5% → 6.5%，之後橫行。', ys: linPath(Y0, 0.065, 10) },
+  shock: { name: '2022 重演', color: '#ef4444', desc: '兩年內債息急升 2 厘（似 2022 年劇本），之後 13 年慢慢回落至 5.0%。', ys: shockPath() },
+  custom:{ name: '自訂', color: '#9333ea', desc: '', ys: null }
 };
 function customYs(target, years) { return linPath(Y0, target, years); }
 
@@ -200,7 +216,7 @@ function stats(ys) {
   }
 
   /* ----- chart scaffolding ----- */
-  var W = 900, H = 460, PL = 74, PR = 16, PT = 14, PB = 34;
+  var W = 900, H = 540, PL = 74, PR = 16, PT = 14, PB = 34;
   var plotW = W - PL - PR, plotH = H - PT - PB;
   var svg = $('#simsvg');
   function xS(t) { return PL + t / YEARS * plotW; }
@@ -228,32 +244,32 @@ function stats(ys) {
     gLines = svgEl('g', {}, svg);
     gAxes = svgEl('g', {}, svg);
     bandPoly = svgEl('polygon', { fill: 'rgba(255,255,255,0.05)', stroke: 'none' }, gBand);
-    realPath = svgEl('path', { fill: 'none', stroke: '#fb923c', 'stroke-width': 1.8, 'stroke-dasharray': '6 5', opacity: 0.9 }, gLines);
-    // faint lines for other scenarios
+    realPath = svgEl('path', { fill: 'none', stroke: '#f97316', 'stroke-width': 2, 'stroke-dasharray': '6 5', opacity: 0.9 }, gLines);
+    // other scenarios: clearly visible but thinner than current
     Object.keys(SCENARIOS).forEach(function (k) {
-      otherPaths[k] = svgEl('path', { fill: 'none', stroke: SCENARIOS[k].color, 'stroke-width': 1.4, opacity: 0.22 }, gLines);
+      otherPaths[k] = svgEl('path', { fill: 'none', stroke: SCENARIOS[k].color, 'stroke-width': 2.2, opacity: 0.6 }, gLines);
     });
-    navPath = svgEl('path', { fill: 'none', stroke: '#fff', 'stroke-width': 3, 'stroke-linecap': 'round' }, gLines);
-    scanLine = svgEl('line', { stroke: 'rgba(255,255,255,0.35)', 'stroke-width': 1, 'stroke-dasharray': '4 4' }, svg);
-    scanDot = svgEl('circle', { r: 5, fill: '#f5c542', stroke: '#0b1220', 'stroke-width': 2 }, svg);
+    navPath = svgEl('path', { fill: 'none', stroke: PALETTE.ink, 'stroke-width': 3.5, 'stroke-linecap': 'round' }, gLines);
+    scanLine = svgEl('line', { stroke: PALETTE.scan, 'stroke-width': 1, 'stroke-dasharray': '4 4' }, svg);
+    scanDot = svgEl('circle', { r: 5.5, fill: '#f5c542', stroke: PALETTE.dotring, 'stroke-width': 2 }, svg);
   }
   function drawStatic() {
     gGrid.innerHTML = ''; gAxes.innerHTML = '';
     var cur = state.cur;
     for (var i = 0; i <= 4; i++) {
       var v = yM * i / 4, yy = yS(v);
-      svgEl('line', { x1: PL, y1: yy, x2: W - PR, y2: yy, stroke: '#26335a', 'stroke-width': 1, opacity: i === 0 ? 0.9 : 0.5 }, gGrid);
-      var tx = svgEl('text', { x: PL - 8, y: yy + 4, 'text-anchor': 'end', fill: '#9fb0d8', 'font-size': 12 }, gAxes);
+      svgEl('line', { x1: PL, y1: yy, x2: W - PR, y2: yy, stroke: PALETTE.grid, 'stroke-width': 1, opacity: i === 0 ? 0.9 : 0.6 }, gGrid);
+      var tx = svgEl('text', { x: PL - 8, y: yy + 4, 'text-anchor': 'end', fill: PALETTE.axis, 'font-size': 12 }, gAxes);
       tx.textContent = fmtCompact(v, cur);
     }
     for (var t = 0; t <= YEARS; t += 5) {
       var xx = xS(t);
-      var tx2 = svgEl('text', { x: xx, y: H - 10, 'text-anchor': 'middle', fill: '#9fb0d8', 'font-size': 12.5 }, gAxes);
+      var tx2 = svgEl('text', { x: xx, y: H - 10, 'text-anchor': 'middle', fill: PALETTE.axis, 'font-size': 12.5 }, gAxes);
       tx2.textContent = t + (t === 0 ? '（而家）' : ' 年');
     }
     // principal baseline
-    svgEl('line', { x1: PL, y1: yS(state.B), x2: W - PR, y2: yS(state.B), stroke: '#9fb0d8', 'stroke-width': 1.2, 'stroke-dasharray': '7 6', opacity: 0.8 }, gAxes);
-    var bl = svgEl('text', { x: W - PR - 4, y: yS(state.B) - 7, 'text-anchor': 'end', fill: '#9fb0d8', 'font-size': 12 }, gAxes);
+    svgEl('line', { x1: PL, y1: yS(state.B), x2: W - PR, y2: yS(state.B), stroke: PALETTE.axis, 'stroke-width': 1.2, 'stroke-dasharray': '7 6', opacity: 0.8 }, gAxes);
+    var bl = svgEl('text', { x: W - PR - 4, y: yS(state.B) - 7, 'text-anchor': 'end', fill: PALETTE.axis, 'font-size': 12 }, gAxes);
     bl.textContent = '本金 ' + fmtCompact(state.B, cur);
   }
   function pathFor(rows, f, key, B) {
@@ -310,12 +326,14 @@ function stats(ys) {
     // scan
     var r = rowAt(rows, f);
     var vNow = r[key] * B;
+    scanLine.setAttribute('stroke', PALETTE.scan);
     scanLine.setAttribute('x1', xS(f)); scanLine.setAttribute('x2', xS(f));
     scanLine.setAttribute('y1', PT); scanLine.setAttribute('y2', H - PB);
     scanLine.setAttribute('display', f > 0 ? '' : 'none');
     scanDot.setAttribute('cx', xS(f)); scanDot.setAttribute('cy', yS(vNow));
     scanDot.setAttribute('display', f > 0 ? '' : 'none');
     scanDot.setAttribute('fill', col);
+    scanDot.setAttribute('stroke', PALETTE.dotring);
     updCounters(f, r, key, B);
   }
   function updCounters(f, r, key, B) {
@@ -394,11 +412,30 @@ function stats(ys) {
   $('#bYears').addEventListener('input', renderBond);
   $('#bRate').addEventListener('input', renderBond);
 
+  /* ----- legend ----- */
+  var legendBox = $('#simlegend');
+  function renderLegend() {
+    var html = '';
+    Object.keys(SCENARIOS).forEach(function (k) {
+      html += '<button class="legend-item' + (k === state.scen ? ' active' : '') + '" data-k="' + k + '" type="button">' +
+        '<span class="sw" style="background:' + SCENARIOS[k].color + '"></span>' + SCENARIOS[k].name + '</button>';
+    });
+    html += '<span class="hint">淡線＝其他劇本 · 粗線＝現時劇本 · 撳一下切換</span>';
+    legendBox.innerHTML = html;
+  }
+  legendBox.addEventListener('click', function (ev) {
+    var it = ev.target.closest('.legend-item');
+    if (!it) return;
+    var btn = document.querySelector('.scen[data-scen="' + it.getAttribute('data-k') + '"]');
+    if (btn) btn.click();
+  });
+
   function refreshAll(resetFrame) {
     yM = yMax();
     drawFrame(resetFrame ? 0 : state.f);
     renderTable();
     renderBond();
+    renderLegend();
   }
   $all('.scen').forEach(function (b) {
     b.addEventListener('click', function () {
@@ -484,6 +521,7 @@ function stats(ys) {
 
   build();
   refreshAll(true);
+  document.addEventListener('themechange', function () { refreshAll(false); });
   // diag (offscreen, for render verification)
   try {
     var d = document.createElement('div');
@@ -513,63 +551,77 @@ function stats(ys) {
     2022: { t: '2021–22 · 加息週期', d: '通脹 9%，聯儲局一年加息 4.25 厘，TLT 2022 年單年跌 31%，由高位計跌超過一半——債券史上最慘一年，比大部分股票仲傷。' },
     2026: { t: '2026 · 而家', d: '息率 5.5% 企喺高位，TLT 收市 US$79.32，過去 5 年價格累跌約 46%（未計收息）。高位嘅息，就係你而家嘅補償。' }
   };
-  var W = 900, H = 380, PL = 60, PR = 20, PT = 18, PB = 34;
-  var plotW = W - PL - PR, plotH = H - PT - PB;
   var svg = $('#histsvg');
-  var ymin = 70, ymax = 185;
-  function xS(yr) { return PL + (yr - 2002) / (2026.7 - 2002) * plotW; }
-  function yS(v) { return PT + (1 - (v - ymin) / (ymax - ymin)) * plotH; }
-  // grid
-  [80, 100, 120, 140, 160, 180].forEach(function (v) {
-    svgEl('line', { x1: PL, y1: yS(v), x2: W - PR, y2: yS(v), stroke: '#26335a', opacity: .5 }, svg);
-    var tx = svgEl('text', { x: PL - 8, y: yS(v) + 4, 'text-anchor': 'end', fill: '#9fb0d8', 'font-size': 11.5 }, svg);
-    tx.textContent = '$' + v;
-  });
-  [2005, 2010, 2015, 2020, 2025].forEach(function (yr) {
-    var tx = svgEl('text', { x: xS(yr), y: H - 8, 'text-anchor': 'middle', fill: '#9fb0d8', 'font-size': 12 }, svg);
-    tx.textContent = yr;
-  });
-  var d = 'M ' + xS(data[0][0]) + ' ' + yS(data[0][1]);
-  for (var i = 1; i < data.length; i++) d += ' L ' + xS(data[i][0]) + ' ' + yS(data[i][1]);
-  var path = svgEl('path', { d: d, fill: 'none', stroke: '#f5c542', 'stroke-width': 2.6 }, svg);
-  // draw-on-scroll
-  var len = path.getTotalLength();
-  path.style.strokeDasharray = len;
-  path.style.strokeDashoffset = len;
-  var drawn = false;
-  var io = new IntersectionObserver(function (ents) {
-    ents.forEach(function (en) {
-      if (en.isIntersecting && !drawn) {
-        drawn = true;
-        path.style.transition = 'stroke-dashoffset 2.4s ease';
-        path.style.strokeDashoffset = 0;
-      }
-    });
-  }, { threshold: 0.25 });
-  io.observe(svg);
-  // area fill under curve (subtle)
-  svgEl('path', { d: d + ' L ' + xS(2026.7) + ' ' + yS(ymin) + ' L ' + xS(2002) + ' ' + yS(ymin) + ' Z', fill: 'rgba(245,197,66,0.06)', stroke: 'none' }, svg);
-  // current point
-  svgEl('circle', { cx: xS(2026.7), cy: yS(79.32), r: 5, fill: '#f87171' }, svg);
-  var nowTx = svgEl('text', { x: xS(2026.7) - 6, y: yS(79.32) - 12, 'text-anchor': 'end', fill: '#f87171', 'font-size': 12.5, 'font-weight': 700 }, svg);
-  nowTx.textContent = '而家 $79.32';
-  var peakTx = svgEl('text', { x: xS(2020.6), y: yS(178.7) - 12, 'text-anchor': 'middle', fill: '#4ade80', 'font-size': 12.5, 'font-weight': 700 }, svg);
-  peakTx.textContent = '2020 高位 $178.7';
-  svgEl('circle', { cx: xS(2020.6), cy: yS(178.7), r: 4, fill: '#4ade80' }, svg);
-  // milestone dots
-  Object.keys(MS).forEach(function (yr) {
-    var y = parseFloat(yr);
-    var pt = data.filter(function (p) { return Math.floor(p[0]) === Math.round(y); })[0] || [y, 100];
-    var g = svgEl('g', { class: 'milestone-dot' }, svg);
-    svgEl('circle', { class: 'dotc', cx: xS(pt[0]), cy: yS(pt[1]), r: 6, fill: '#1a2748', stroke: '#60a5fa', 'stroke-width': 2 }, g);
-    var lb = svgEl('text', { x: xS(pt[0]), y: yS(pt[1]) + 22, 'text-anchor': 'middle', fill: '#9fb0d8', 'font-size': 11.5 }, g);
-    lb.textContent = yr;
-    function show() { setCard(MS[yr]); }
-    g.addEventListener('click', show);
-    g.addEventListener('mouseenter', show);
-  });
-  // chips
   var chipBox = $('#hist-chips');
+  var drawn = false, ioAdded = false, pathRef = null;
+  function setCard(m) { $('#hist-card').innerHTML = '<b class="gold">' + m.t + '</b> — ' + m.d; }
+  function buildHist() {
+    svg.innerHTML = '';
+    var W = 900, H = 380, PL = 60, PR = 20, PT = 18, PB = 34;
+    var plotW = W - PL - PR, plotH = H - PT - PB;
+    var ymin = 70, ymax = 185;
+    function xS(yr) { return PL + (yr - 2002) / (2026.7 - 2002) * plotW; }
+    function yS(v) { return PT + (1 - (v - ymin) / (ymax - ymin)) * plotH; }
+    // grid
+    [80, 100, 120, 140, 160, 180].forEach(function (v) {
+      svgEl('line', { x1: PL, y1: yS(v), x2: W - PR, y2: yS(v), stroke: PALETTE.grid, opacity: .7 }, svg);
+      var tx = svgEl('text', { x: PL - 8, y: yS(v) + 4, 'text-anchor': 'end', fill: PALETTE.axis, 'font-size': 11.5 }, svg);
+      tx.textContent = '$' + v;
+    });
+    [2005, 2010, 2015, 2020, 2025].forEach(function (yr) {
+      var tx = svgEl('text', { x: xS(yr), y: H - 8, 'text-anchor': 'middle', fill: PALETTE.axis, 'font-size': 12 }, svg);
+      tx.textContent = yr;
+    });
+    var d = 'M ' + xS(data[0][0]) + ' ' + yS(data[0][1]);
+    for (var i = 1; i < data.length; i++) d += ' L ' + xS(data[i][0]) + ' ' + yS(data[i][1]);
+    // area under curve (drawn first, under the line)
+    svgEl('path', { d: d + ' L ' + xS(2026.7) + ' ' + yS(ymin) + ' L ' + xS(2002) + ' ' + yS(ymin) + ' Z', fill: 'rgba(245,197,66,0.10)', stroke: 'none' }, svg);
+    var path = svgEl('path', { d: d, fill: 'none', stroke: '#f5c542', 'stroke-width': 2.6 }, svg);
+    pathRef = path;
+    if (drawn) {
+      path.style.strokeDasharray = 'none';
+    } else {
+      var len = path.getTotalLength();
+      path.style.strokeDasharray = len;
+      path.style.strokeDashoffset = len;
+      if (!ioAdded) {
+        ioAdded = true;
+        var io = new IntersectionObserver(function (ents) {
+          ents.forEach(function (en) {
+            if (en.isIntersecting && !drawn) {
+              drawn = true;
+              pathRef.style.transition = 'stroke-dashoffset 2.4s ease';
+              pathRef.style.strokeDashoffset = 0;
+            }
+          });
+        }, { threshold: 0.25 });
+        io.observe(svg);
+      }
+    }
+    // current point
+    svgEl('circle', { cx: xS(2026.7), cy: yS(79.32), r: 5, fill: '#ef4444' }, svg);
+    var nowTx = svgEl('text', { x: xS(2026.7) - 6, y: yS(79.32) - 12, 'text-anchor': 'end', fill: '#ef4444', 'font-size': 12.5, 'font-weight': 700 }, svg);
+    nowTx.textContent = '而家 $79.32';
+    var peakTx = svgEl('text', { x: xS(2020.6), y: yS(178.7) - 12, 'text-anchor': 'middle', fill: '#22c55e', 'font-size': 12.5, 'font-weight': 700 }, svg);
+    peakTx.textContent = '2020 高位 $178.7';
+    svgEl('circle', { cx: xS(2020.6), cy: yS(178.7), r: 4, fill: '#22c55e' }, svg);
+    // milestone dots
+    Object.keys(MS).forEach(function (yr) {
+      var y = parseFloat(yr);
+      var pt = data.filter(function (p) { return Math.floor(p[0]) === Math.round(y); })[0] || [y, 100];
+      var g = svgEl('g', { class: 'milestone-dot' }, svg);
+      svgEl('circle', { class: 'dotc', cx: xS(pt[0]), cy: yS(pt[1]), r: 6, fill: PALETTE.dotfill, stroke: '#3b82f6', 'stroke-width': 2 }, g);
+      var lb = svgEl('text', { x: xS(pt[0]), y: yS(pt[1]) + 22, 'text-anchor': 'middle', fill: PALETTE.axis, 'font-size': 11.5 }, g);
+      lb.textContent = yr;
+      g.addEventListener('click', function () { setCard(MS[yr]); });
+      g.addEventListener('mouseenter', function () { setCard(MS[yr]); });
+    });
+    var note = svgEl('text', { x: PL + 6, y: PT + 14, fill: PALETTE.axis, 'font-size': 12 }, svg);
+    note.textContent = 'TLT 年度收市價（美元，約數）· 價格未計收息';
+  }
+  buildHist();
+  document.addEventListener('themechange', function () { buildHist(); });
+  // chips
   Object.keys(MS).forEach(function (yr) {
     var b = document.createElement('button');
     b.className = 'chip';
@@ -577,7 +629,34 @@ function stats(ys) {
     b.addEventListener('click', function () { setCard(MS[yr]); });
     chipBox.appendChild(b);
   });
-  function setCard(m) { $('#hist-card').innerHTML = '<b class="gold">' + m.t + '</b> — ' + m.d; }
-  var note = svgEl('text', { x: PL + 6, y: PT + 14, fill: '#7d8db8', 'font-size': 12 }, svg);
-  note.textContent = 'TLT 年度收市價（美元，約數）· 價格未計收息';
+})();
+
+/* ================= theme switcher (light / dark / system, default system) ================= */
+(function () {
+  var KEY = 'tlt-theme';
+  var seg = $('#themeSeg');
+  var saved = 'system';
+  try { saved = localStorage.getItem(KEY) || 'system'; } catch (e) { /* noop */ }
+  function apply(t) {
+    if (t === 'system') delete document.documentElement.dataset.theme;
+    else document.documentElement.dataset.theme = t;
+    try { localStorage.setItem(KEY, t); } catch (e) { /* noop */ }
+    refreshPalette();
+    document.dispatchEvent(new CustomEvent('themechange'));
+    $all('#themeSeg .tbtn').forEach(function (b) { b.classList.toggle('active', b.getAttribute('data-t') === t); });
+  }
+  seg.addEventListener('click', function (ev) {
+    var b = ev.target.closest('.tbtn');
+    if (b) apply(b.getAttribute('data-t'));
+  });
+  var mq = window.matchMedia('(prefers-color-scheme: light)');
+  var onSys = function () {
+    if (!document.documentElement.dataset.theme) {
+      refreshPalette();
+      document.dispatchEvent(new CustomEvent('themechange'));
+    }
+  };
+  if (mq.addEventListener) mq.addEventListener('change', onSys);
+  else if (mq.addListener) mq.addListener(onSys);
+  apply(saved);
 })();
