@@ -77,7 +77,7 @@ function shockPath() {
 var SCENARIOS = {
   cut:   { name: '減息週期', color: '#22c55e', desc: '經濟放緩，聯儲局減息：20 年債息 5 年內 5.5% → 3.0%，之後橫行。', ys: linPath(Y0, 0.030, 5) },
   flat:  { name: '風平浪靜', color: '#3b82f6', desc: '債息 20 年都喺 5.5% 附近——純收息劇本。', ys: (function () { var a = []; for (var i = 0; i <= YEARS; i++) a.push(Y0); return a; })() },
-  infl:  { name: '通脹重燃', color: '#f97316', desc: '通脹回歸，債息 10 年內 5.5% → 6.5%，之後橫行。', ys: linPath(Y0, 0.065, 10) },
+  infl:  { name: '通脹重燃', color: '#ca8a04', desc: '通脹回歸，債息 10 年內 5.5% → 6.5%，之後橫行。', ys: linPath(Y0, 0.065, 10) },
   shock: { name: '2022 重演', color: '#ef4444', desc: '兩年內債息急升 2 厘（似 2022 年劇本），之後 13 年慢慢回落至 5.0%。', ys: shockPath() },
   custom:{ name: '自訂', color: '#9333ea', desc: '', ys: null }
 };
@@ -244,12 +244,12 @@ function stats(ys) {
     gLines = svgEl('g', {}, svg);
     gAxes = svgEl('g', {}, svg);
     bandPoly = svgEl('polygon', { fill: 'rgba(255,255,255,0.05)', stroke: 'none' }, gBand);
-    realPath = svgEl('path', { fill: 'none', stroke: '#f97316', 'stroke-width': 2, 'stroke-dasharray': '6 5', opacity: 0.9 }, gLines);
-    // other scenarios: clearly visible but thinner than current
+    realPath = svgEl('path', { fill: 'none', stroke: PALETTE.axis, 'stroke-width': 2, 'stroke-dasharray': '7 5', opacity: 0.9 }, gLines);
+    // other scenarios: dotted lines, clearly different from the selected bold solid line
     Object.keys(SCENARIOS).forEach(function (k) {
-      otherPaths[k] = svgEl('path', { fill: 'none', stroke: SCENARIOS[k].color, 'stroke-width': 2.2, opacity: 0.6 }, gLines);
+      otherPaths[k] = svgEl('path', { fill: 'none', stroke: SCENARIOS[k].color, 'stroke-width': 2.4, opacity: 0.85, 'stroke-dasharray': '0.5 9', 'stroke-linecap': 'round' }, gLines);
     });
-    navPath = svgEl('path', { fill: 'none', stroke: PALETTE.ink, 'stroke-width': 3.5, 'stroke-linecap': 'round' }, gLines);
+    navPath = svgEl('path', { fill: 'none', stroke: PALETTE.ink, 'stroke-width': 4, 'stroke-linecap': 'round' }, gLines);
     scanLine = svgEl('line', { stroke: PALETTE.scan, 'stroke-width': 1, 'stroke-dasharray': '4 4' }, svg);
     scanDot = svgEl('circle', { r: 5.5, fill: '#f5c542', stroke: PALETTE.dotring, 'stroke-width': 2 }, svg);
   }
@@ -417,10 +417,13 @@ function stats(ys) {
   function renderLegend() {
     var html = '';
     Object.keys(SCENARIOS).forEach(function (k) {
+      var sw = k === state.scen
+        ? '<span class="sw" style="background:' + SCENARIOS[k].color + ';width:22px;height:4px"></span>'
+        : '<span class="sw" style="width:18px;height:0;border-radius:0;border-top:3px dotted ' + SCENARIOS[k].color + '"></span>';
       html += '<button class="legend-item' + (k === state.scen ? ' active' : '') + '" data-k="' + k + '" type="button">' +
-        '<span class="sw" style="background:' + SCENARIOS[k].color + '"></span>' + SCENARIOS[k].name + '</button>';
+        sw + SCENARIOS[k].name + '</button>';
     });
-    html += '<span class="hint">淡線＝其他劇本 · 粗線＝現時劇本 · 撳一下切換</span>';
+    html += '<span class="hint">虛點線＝其他劇本 · 粗實線＝現時劇本 · 撳一下切換</span>';
     legendBox.innerHTML = html;
   }
   legendBox.addEventListener('click', function (ev) {
