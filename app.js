@@ -407,7 +407,7 @@ function stats(ys) {
       state.scen = b.getAttribute('data-scen');
       $('#custom-panel').style.display = state.scen === 'custom' ? '' : 'none';
       $('#scen-desc').textContent = state.scen === 'custom'
-        ? '自訂：由 4.7% 開始，用 ' + custom.years + ' 年去到 ' + fmtPct(custom.target, 1) + '，之後橫行。'
+        ? '自訂：由 5.5% 開始，用 ' + custom.years + ' 年去到 ' + fmtPct(custom.target, 1) + '，之後橫行。'
         : SCENARIOS[state.scen].desc;
       refreshAll(true);
       if (!state.playing) { btnPlay.textContent = '▶ 播放 20 年'; }
@@ -511,7 +511,7 @@ function stats(ys) {
     2013: { t: '2013 · 縮減恐慌（Taper Tantrum）', d: '聯儲局暗示收水，債息由 1.9% 抽上 3%，TLT 全年價格跌約 15%——第一次令好多人知長債都會好痛。' },
     2020: { t: '2020 · 疫情減息', d: '疫情爆發，聯儲局減息到零，8 月 TLT 見歷史高位 US$178.7。喺高位追入嘅人，之後經歷咗……（撳 2022）' },
     2022: { t: '2021–22 · 加息週期', d: '通脹 9%，聯儲局一年加息 4.25 厘，TLT 2022 年單年跌 31%，由高位計跌超過一半——債券史上最慘一年，比大部分股票仲傷。' },
-    2026: { t: '2026 · 而家', d: '息率 4.7% 企喺高位，TLT 收市 US$79.32，過去 5 年價格累跌約 46%（未計收息）。高位嘅息，就係你而家嘅補償。' }
+    2026: { t: '2026 · 而家', d: '息率 5.5% 企喺高位，TLT 收市 US$79.32，過去 5 年價格累跌約 46%（未計收息）。高位嘅息，就係你而家嘅補償。' }
   };
   var W = 900, H = 380, PL = 60, PR = 20, PT = 18, PB = 34;
   var plotW = W - PL - PR, plotH = H - PT - PB;
